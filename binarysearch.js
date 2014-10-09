@@ -9,21 +9,23 @@
     function BinarySearchTree() {
         var root;
 
-        // function remove(node, value) {
-        //     if (value < node.value) {
-        //         remove(node.leftChild, value);
-        //     } else if (value > node.value) {
-        //         remove(node.rightChild, value);
-        //     } else {
-        //         if (node.leftChild && node.rightChild) {
+        this.contains = function(value) {
+            var currentNode = root;
+            var inTree = false;
 
-        //         } else if (node.leftChild || node.rightChild) {
+            while (!inTree && currentNode) {
 
-        //         } else {
-        //             delete node;
-        //         }
-        //     }
-        // }
+                if (value < currentNode.value) {
+                    currentNode = currentNode.leftChild;
+                } else if (value > currentNode.value) {
+                    currentNode = currentNode.rightChild;
+                } else {
+                    inTree = true;
+                }
+            }
+
+            return inTree;
+        }
 
         this.insert = function(value) {
 
@@ -59,26 +61,33 @@
         this.remove = function(value) {
             var currentNode = root;
             var parentNode;
-            var inTree = false;
+            var replacementNode;
+            var replacementNodeParent;
 
-            while (!inTree && currentNode) {
-
-                if (value < currentNode.value) {
-                    parentNode = currentNode;
-                    currentNode = currentNode.leftChild;
-                } else if (value > currentNode.value) {
-                    parentNode = currentNode;
-                    currentNode = currentNode.rightChild;
-                } else {
-                    inTree = true;
-                }
-            }
+            var inTree = this.contains(value);
 
             if (inTree) {
                 if (currentNode === root) {
                     if (currentNode.leftChild && currentNode.rightChild) {
                         // Two child nodes
-                        // TODO
+                        replacementNode = root.leftChild;
+
+                        while (replacementNode.rightChild !== null) {
+                            replacementNodeParent = replacementNode;
+                            replacementNode = replacementNode.rightChild;
+                        }
+                        console.log("replacementNodeParent " + replacementNodeParent);
+                        console.log("replacementNode " + replacementNode);
+                        // if (replacementNodeParent !== null) {
+                        //     replacementNodeParent.rightChild = replacementNode.leftChild;
+                        //     replacementNode.rightChild = root.rightChild;
+                        //     replacementNode.leftChild = root.leftChild;
+                        // } else {
+                        //     replacementNode.rightChild = root.rightChild;
+                        // }
+
+                        root = replacementNode;
+
                     } else if (currentNode.leftChild || currentNode.rightChild) {
                         // One child node
                         root = currentNode.leftChild || currentNode.rightChild;
@@ -108,6 +117,39 @@
                 }
             }
 
+        };
+
+        this.traverse = function(operation) {
+            function visitAll(node) {
+                if (node) {
+                    if (node.leftChild !== null) {
+                        visitAll(node.leftChild);
+                    }
+
+                    operation.call(this, node);
+
+                    if (node.rightChild !== null) {
+                        visitAll(node.rightChild);
+                    }
+                }
+            }
+            visitAll(root);
+        };
+
+        this.size = function() {
+            var length = 0;
+            this.traverse(function(node) {
+                length++;
+            });
+            return length;
+        };
+
+        this.toArray = function() {
+            var array = [];
+            this.traverse(function(node) {
+                array.push(node.value);
+            });
+            return array;
         };
 
         this.getMin = function() {

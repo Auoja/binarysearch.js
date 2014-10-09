@@ -7,10 +7,19 @@ bst.insert(55);
 bst.insert(10);
 bst.insert(60);
 
+bst.traverse(function (n) {
+    console.log(n.value);
+});
+console.log(bst.size());
 console.log(bst.getRoot());
 
 // bst.remove(10); // No children
-bst.remove(55); // One child
-console.log("DELETE");
+// bst.remove(50); // One child
+console.log(bst.contains(50));
+console.log(bst.contains(55));
+console.log(bst.contains(10));
+console.log(bst.contains(60));
+console.log(bst.contains(0));
 
-console.log(bst.getRoot());
+
+console.log(bst.toArray());
