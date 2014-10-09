@@ -152,6 +152,23 @@
             return array;
         };
 
+        this.arrayToTree = function(array) {
+            if (array.length !== 0) {
+                var middle = Math.floor(array.length / 2);
+                this.insert(array[middle]);
+                this.arrayToTree(array.slice(0, middle));
+                this.arrayToTree(array.slice(middle + 1));
+            } else {
+                return;
+            }
+        };
+
+        this.flatten = function() {
+            var sortedArray = this.toArray();
+            root = null;
+            this.arrayToTree(sortedArray);
+        }
+
         this.getMin = function() {
             var node = root;
             while (node.leftChild) {
