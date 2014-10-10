@@ -2,32 +2,32 @@ var BST = require('../binarysearch.js');
 
 var bst = BST.createBST();
 
-bst.insert(50);
-bst.insert(55);
+bst.insert(8);
+bst.insert(3);
 bst.insert(10);
-bst.insert(20);
-bst.insert(60);
-bst.insert(16);
-bst.insert(18);
-bst.insert(23);
+bst.insert(1);
+bst.insert(6);
+bst.insert(14);
+bst.insert(4);
+bst.insert(7);
+bst.insert(13);
+// bst.insert(2);
 
-bst.traverse(function (n) {
-    console.log(n.value);
-});
-console.log(bst.size());
-console.log(bst.getRoot());
+// bst.traverse(function (n) {
+//     console.log(n.value);
+// });
+// console.log(bst.size());
+// console.log(bst.getRoot());
 
 // bst.remove(10); // No children
-// bst.remove(50); // One child
-console.log(bst.contains(50));
-console.log(bst.contains(55));
-console.log(bst.contains(10));
-console.log(bst.contains(60));
-console.log(bst.contains(0));
 
+// bst.remove(1);
+bst.remove(3);
+// bst.remove(3);
+
+console.log(bst.getRoot());
 
 console.log(bst.toArray());
 
 bst.flatten();
-console.log(bst.getRoot());
 

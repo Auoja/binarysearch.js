@@ -7,10 +7,10 @@
     }
 
     function BinarySearchTree() {
-        var root;
+        var _root;
 
         this.contains = function(value) {
-            var currentNode = root;
+            var currentNode = _root;
             var inTree = false;
 
             while (!inTree && currentNode) {
@@ -31,25 +31,25 @@
 
             var newNode = new Node(value, null, null);
 
-            if (!root) {
-                root = newNode;
+            if (!_root) {
+                _root = newNode;
             } else {
-                var curNode = root;
+                var currentNode = _root;
 
                 while (true) {
-                    if (value < curNode.value) {
-                        if (curNode.leftChild === null) {
-                            curNode.leftChild = newNode;
+                    if (value < currentNode.value) {
+                        if (currentNode.leftChild === null) {
+                            currentNode.leftChild = newNode;
                             break;
                         } else {
-                            curNode = curNode.leftChild;
+                            currentNode = currentNode.leftChild;
                         }
-                    } else if (value > curNode.value) {
-                        if (curNode.rightChild === null) {
-                            curNode.rightChild = newNode;
+                    } else if (value > currentNode.value) {
+                        if (currentNode.rightChild === null) {
+                            currentNode.rightChild = newNode;
                             break;
                         } else {
-                            curNode = curNode.rightChild;
+                            currentNode = currentNode.rightChild;
                         }
                     } else {
                         break;
@@ -59,62 +59,86 @@
         };
 
         this.remove = function(value) {
-            var currentNode = root;
+            var currentNode = _root;
             var parentNode;
-            var replacementNode;
-            var replacementNodeParent;
+            var inTree = false;
 
-            var inTree = this.contains(value);
-
-            if (inTree) {
-                if (currentNode === root) {
-                    if (currentNode.leftChild && currentNode.rightChild) {
-                        // Two child nodes
-                        replacementNode = root.leftChild;
-
-                        while (replacementNode.rightChild !== null) {
-                            replacementNodeParent = replacementNode;
-                            replacementNode = replacementNode.rightChild;
-                        }
-                        console.log("replacementNodeParent " + replacementNodeParent);
-                        console.log("replacementNode " + replacementNode);
-                        // if (replacementNodeParent !== null) {
-                        //     replacementNodeParent.rightChild = replacementNode.leftChild;
-                        //     replacementNode.rightChild = root.rightChild;
-                        //     replacementNode.leftChild = root.leftChild;
-                        // } else {
-                        //     replacementNode.rightChild = root.rightChild;
-                        // }
-
-                        root = replacementNode;
-
-                    } else if (currentNode.leftChild || currentNode.rightChild) {
-                        // One child node
-                        root = currentNode.leftChild || currentNode.rightChild;
-                    } else {
-                        // No child nodes
-                        root = null;
-                    }
+            function removeNodeWithNoChild(node, parent) {
+                if (node === _root) {
+                    _root = null;
                 } else {
-                    if (currentNode.leftChild && currentNode.rightChild) {
-                        // Two child nodes
-                        // TODO
-                    } else if (currentNode.leftChild || currentNode.rightChild) {
-                        // One child node
-                        if (currentNode.value < parentNode.value) {
-                            parentNode.leftChild = currentNode.leftChild || currentNode.rightChild;
-                        } else {
-                            parentNode.rightChild = currentNode.leftChild || currentNode.rightChild;
-                        }
+                    if (node.value < parent.value) {
+                        parent.leftChild = null;
                     } else {
-                        // No child nodes
-                        if (currentNode.value < parentNode.value) {
-                            parentNode.leftChild = null;
-                        } else {
-                            parentNode.rightChild = null;
-                        }
+                        parent.rightChild = null;
                     }
                 }
+            }
+
+            function removeNodeWithOneChild(node, parent) {
+                if (node === _root) {
+                    _root = node.leftChild || node.rightChild;
+                } else {
+                    if (node.value < parent.value) {
+                        parent.leftChild = node.leftChild || node.rightChild;
+                    } else {
+                        parent.rightChild = node.leftChild || node.rightChild;
+                    }
+                }
+            }
+
+            function removeNodeWithTwoChild(node, parent) {
+
+                var replacementNode = node.leftChild;
+                var replacementNodeParent = null;
+
+                while (replacementNode.rightChild !== null) {
+                    replacementNodeParent = replacementNode;
+                    replacementNode = replacementNode.rightChild;
+                }
+
+                if (replacementNodeParent !== null) {
+                    replacementNodeParent.rightChild = replacementNode.leftChild;
+                    replacementNode.rightChild = node.rightChild;
+                    replacementNode.leftChild = node.leftChild;
+                } else {
+                    replacementNode.rightChild = node.rightChild;
+                }
+
+                if (node === _root) {
+                    _root = replacementNode;
+                } else {
+                    if (node.value < parent.value) {
+                        parent.leftChild = replacementNode;
+                    } else {
+                        parent.rightChild = replacementNode;
+                    }
+                }
+
+            }
+
+            while (!inTree && currentNode) {
+                if (value < currentNode.value) {
+                    parentNode = currentNode;
+                    currentNode = currentNode.leftChild;
+                } else if (value > currentNode.value) {
+                    parentNode = currentNode;
+                    currentNode = currentNode.rightChild;
+                } else {
+                    inTree = true;
+                }
+            }
+
+            if (inTree) {
+
+                if (currentNode.leftChild && currentNode.rightChild) {
+                    removeNodeWithTwoChild(currentNode, parentNode);
+                } else if (currentNode.leftChild || currentNode.rightChild) {
+                    removeNodeWithOneChild(currentNode, parentNode);
+                } else {
+                    removeNodeWithNoChild(currentNode, parentNode);
+                }
+
             }
 
         };
@@ -133,7 +157,7 @@
                     }
                 }
             }
-            visitAll(root);
+            visitAll(_root);
         };
 
         this.size = function() {
@@ -165,12 +189,12 @@
 
         this.flatten = function() {
             var sortedArray = this.toArray();
-            root = null;
+            _root = null;
             this.arrayToTree(sortedArray);
         }
 
         this.getMin = function() {
-            var node = root;
+            var node = _root;
             while (node.leftChild) {
                 node = node.leftChild;
             }
@@ -178,7 +202,7 @@
         };
 
         this.getMax = function() {
-            var node = root;
+            var node = _root;
             while (node.rightChild) {
                 node = node.rightChild;
             }
@@ -186,7 +210,7 @@
         };
 
         this.getRoot = function() {
-            return root;
+            return _root;
         };
 
     }
