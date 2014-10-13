@@ -8,6 +8,7 @@
 
     function BinarySearchTree() {
         var _root;
+        var _size = 0;
 
         this.contains = function(value) {
             var currentNode = _root;
@@ -30,9 +31,11 @@
         this.insert = function(value) {
 
             var newNode = new Node(value, null, null);
+            var inserted = false;
 
             if (!_root) {
                 _root = newNode;
+                inserted = true;
             } else {
                 var currentNode = _root;
 
@@ -40,6 +43,7 @@
                     if (value < currentNode.value) {
                         if (currentNode.leftChild === null) {
                             currentNode.leftChild = newNode;
+                            inserted = true;
                             break;
                         } else {
                             currentNode = currentNode.leftChild;
@@ -47,6 +51,7 @@
                     } else if (value > currentNode.value) {
                         if (currentNode.rightChild === null) {
                             currentNode.rightChild = newNode;
+                            inserted = true;
                             break;
                         } else {
                             currentNode = currentNode.rightChild;
@@ -55,6 +60,10 @@
                         break;
                     }
                 }
+            }
+
+            if (inserted) {
+                _size++;
             }
         };
 
@@ -139,8 +148,8 @@
                     removeNodeWithNoChild(currentNode, parentNode);
                 }
 
+                _size--;
             }
-
         };
 
         this.traverse = function(operation) {
@@ -161,11 +170,7 @@
         };
 
         this.size = function() {
-            var length = 0;
-            this.traverse(function(node) {
-                length++;
-            });
-            return length;
+            return _size;
         };
 
         this.toArray = function() {
@@ -190,8 +195,13 @@
         this.flatten = function() {
             var sortedArray = this.toArray();
             _root = null;
+            _size = 0;
             this.arrayToTree(sortedArray);
-        }
+        };
+
+        this.getDepth = function() {
+            // TODO
+        };
 
         this.getMin = function() {
             var node = _root;
@@ -210,7 +220,16 @@
         };
 
         this.getRoot = function() {
+            return _root.value;
+        };
+
+        this.getRootNode = function() {
             return _root;
+        };
+
+        this.delete = function() {
+            root = null;
+            _size = 0;
         };
 
     }
@@ -222,4 +241,4 @@
 
     return exports;
 
-})(typeof exports === 'undefined' ? this['Bst'] = {} : exports);
+})(typeof exports === 'undefined' ? this['BST'] = {} : exports);
