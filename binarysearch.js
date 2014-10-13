@@ -1,7 +1,7 @@
 (function(exports) {
 
     function BinarySearchTree(value) {
-        var _root;
+        var _root = null;
         var _size = 0;
         var getValue = value || function(a) {
             return a;
@@ -18,63 +18,59 @@
             return getValue.call(this, this.content);
         };
 
-
-        // Public
-        this.contains = function(node) {
-            var currentNode = _root;
-            var inTree = false;
-
-            while (!inTree && currentNode) {
-                if (getValue(node) < currentNode.getValue()) {
-                    currentNode = currentNode.leftChild;
-                } else if (getValue(node) > currentNode.getValue()) {
-                    currentNode = currentNode.rightChild;
-                } else {
-                    inTree = true;
-                }
+        // Private
+        function _insert(newNode, node) {
+            if (node === null) {
+                _size++;
+                return newNode;
+            } else if (newNode.getValue() < node.getValue()) {
+                node.leftChild = _insert(newNode, node.leftChild);
+                return node;
+            } else if (newNode.getValue() > node.getValue()) {
+                node.rightChild = _insert(newNode, node.rightChild);
+                return node;
             }
-
-            return inTree;
         }
 
-        this.insert = function(node) {
+        function _getMin(node) {
+            if (node.leftChild === null) {
+                return node.content;
+            }
+            return _getMin(node.leftChild);
+        }
 
-            var newNode = new Node(node, null, null);
-            var inserted = false;
+        function _getMax(node) {
+            if (node.rightChild === null) {
+                return node.content;
+            }
+            return _getMax(node.rightChild);
+        }
 
-            if (!_root) {
-                _root = newNode;
-                inserted = true;
+        function _contains(searchNode, node) {
+            if (node === null) {
+                return false;
+            } else if (getValue(searchNode) < node.getValue()) {
+                return _contains(searchNode, node.leftChild);
+            } else if (getValue(searchNode) > node.getValue()) {
+                return _contains(searchNode, node.rightChild);
             } else {
-                var currentNode = _root;
-
-                while (true) {
-                    if (getValue(node) < currentNode.getValue()) {
-                        if (currentNode.leftChild === null) {
-                            currentNode.leftChild = newNode;
-                            inserted = true;
-                            break;
-                        } else {
-                            currentNode = currentNode.leftChild;
-                        }
-                    } else if (getValue(node) > currentNode.getValue()) {
-                        if (currentNode.rightChild === null) {
-                            currentNode.rightChild = newNode;
-                            inserted = true;
-                            break;
-                        } else {
-                            currentNode = currentNode.rightChild;
-                        }
-                    } else {
-                        break;
-                    }
-                }
+                return true;
             }
+        }
 
-            if (inserted) {
+        // Public
+        this.contains = function(searchNode) {
+            return _contains(searchNode, _root)
+        }
+
+        this.insert = function(content) {
+            if (!_root) {
+                _root = new Node(content, null, null);
                 _size++;
+            } else {
+                _root = _insert(new Node(content, null, null), _root);
             }
-        };
+        }
 
         this.remove = function(node) {
             var currentNode = _root;
@@ -161,21 +157,22 @@
             }
         };
 
-        this.traverse = function(operation) {
-            function visitAll(node) {
-                if (node) {
-                    if (node.leftChild !== null) {
-                        visitAll(node.leftChild);
-                    }
+        function _traverse(node, operation) {
+            if (node) {
+                if (node.leftChild !== null) {
+                    _traverse(node.leftChild, operation);
+                }
 
-                    operation.call(this, node);
+                operation.call(this, node.content);
 
-                    if (node.rightChild !== null) {
-                        visitAll(node.rightChild);
-                    }
+                if (node.rightChild !== null) {
+                    _traverse(node.rightChild, operation);
                 }
             }
-            visitAll(_root);
+        }
+
+        this.traverse = function(operation) {
+            _traverse(_root, operation);
         };
 
         this.size = function() {
@@ -213,19 +210,11 @@
         };
 
         this.getMin = function() {
-            var node = _root;
-            while (node.leftChild) {
-                node = node.leftChild;
-            }
-            return node.content;
+            return _getMin(_root);
         };
 
         this.getMax = function() {
-            var node = _root;
-            while (node.rightChild) {
-                node = node.rightChild;
-            }
-            return node.content;
+            return _getMax(_root);
         };
 
         this.getRoot = function() {
@@ -234,6 +223,10 @@
 
         this.getRootValue = function() {
             return _root.getValue();
+        };
+
+        this.getTree = function() {
+            return _root;
         };
 
         this.delete = function() {

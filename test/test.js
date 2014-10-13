@@ -123,6 +123,31 @@ describe('#contains()', function() {
 
 });
 
+describe('#traverse()', function() {
+
+    var bst = BST.createBST();
+    bst.insert(2);
+    bst.insert(3);
+    bst.insert(1);
+
+    it('Should return 6', function() {
+        var result = 0;
+        bst.traverse(function(node) {
+            result += node;
+        })
+        assert.equal(6, result);
+    });
+
+    it('Should return 3', function() {
+        var result = 0;
+        bst.traverse(function(node) {
+            result++;
+        })
+        assert.equal(3, result);
+    });
+
+});
+
 
 describe('#remove()', function() {
 
@@ -255,7 +280,7 @@ describe('#remove()', function() {
 
 });
 
-describe('#getMin(), #getMax', function() {
+describe('#getMin(), #getMax()', function() {
 
     it('Should return 0 and 17', function() {
         var bst = BST.createBST();
