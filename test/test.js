@@ -44,6 +44,23 @@ describe('#insert()', function() {
         });
     });
 
+    describe('Insert single object', function() {
+        var bst = BST.createBST(function(person) {
+            return person.age;
+        });
+        bst.insert({
+            name: "John Foo",
+            age: 13
+        });
+
+        it('Should have size 1', function() {
+            assert.equal(1, bst.size());
+        });
+
+        it('Should have 13 as root', function() {
+            assert.equal(13, bst.getRoot());
+        });
+    });
 });
 
 describe('#contains()', function() {

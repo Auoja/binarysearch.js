@@ -1,24 +1,26 @@
 (function(exports) {
 
-    function Node(val, left, right) {
-        this.value = val;
+    function Node(content, left, right) {
+        this.content = content;
         this.leftChild = left;
         this.rightChild = right;
     }
 
-    function BinarySearchTree() {
+    function BinarySearchTree(value) {
         var _root;
         var _size = 0;
+        var getValue = value || function(a) {
+            return a;
+        };
 
-        this.contains = function(value) {
+        this.contains = function(node) {
             var currentNode = _root;
             var inTree = false;
 
             while (!inTree && currentNode) {
-
-                if (value < currentNode.value) {
+                if (getValue(node) < getValue(currentNode.content)) {
                     currentNode = currentNode.leftChild;
-                } else if (value > currentNode.value) {
+                } else if (getValue(node) > getValue(currentNode.content)) {
                     currentNode = currentNode.rightChild;
                 } else {
                     inTree = true;
@@ -28,9 +30,9 @@
             return inTree;
         }
 
-        this.insert = function(value) {
+        this.insert = function(node) {
 
-            var newNode = new Node(value, null, null);
+            var newNode = new Node(node, null, null);
             var inserted = false;
 
             if (!_root) {
@@ -40,7 +42,7 @@
                 var currentNode = _root;
 
                 while (true) {
-                    if (value < currentNode.value) {
+                    if (getValue(node) < getValue(currentNode.content)) {
                         if (currentNode.leftChild === null) {
                             currentNode.leftChild = newNode;
                             inserted = true;
@@ -48,7 +50,7 @@
                         } else {
                             currentNode = currentNode.leftChild;
                         }
-                    } else if (value > currentNode.value) {
+                    } else if (getValue(node) > getValue(currentNode.content)) {
                         if (currentNode.rightChild === null) {
                             currentNode.rightChild = newNode;
                             inserted = true;
@@ -67,7 +69,7 @@
             }
         };
 
-        this.remove = function(value) {
+        this.remove = function(node) {
             var currentNode = _root;
             var parentNode;
             var inTree = false;
@@ -76,7 +78,7 @@
                 if (node === _root) {
                     _root = null;
                 } else {
-                    if (node.value < parent.value) {
+                    if (getValue(node.content) < getValue(parent.content)) {
                         parent.leftChild = null;
                     } else {
                         parent.rightChild = null;
@@ -88,7 +90,7 @@
                 if (node === _root) {
                     _root = node.leftChild || node.rightChild;
                 } else {
-                    if (node.value < parent.value) {
+                    if (getValue(node.content) < getValue(parent.content)) {
                         parent.leftChild = node.leftChild || node.rightChild;
                     } else {
                         parent.rightChild = node.leftChild || node.rightChild;
@@ -117,7 +119,7 @@
                 if (node === _root) {
                     _root = replacementNode;
                 } else {
-                    if (node.value < parent.value) {
+                    if (getValue(node.content) < getValue(parent.content)) {
                         parent.leftChild = replacementNode;
                     } else {
                         parent.rightChild = replacementNode;
@@ -127,10 +129,10 @@
             }
 
             while (!inTree && currentNode) {
-                if (value < currentNode.value) {
+                if (getValue(node) < getValue(currentNode.content)) {
                     parentNode = currentNode;
                     currentNode = currentNode.leftChild;
-                } else if (value > currentNode.value) {
+                } else if (getValue(node) > getValue(currentNode.content)) {
                     parentNode = currentNode;
                     currentNode = currentNode.rightChild;
                 } else {
@@ -176,7 +178,7 @@
         this.toArray = function() {
             var array = [];
             this.traverse(function(node) {
-                array.push(node.value);
+                array.push(getValue(node));
             });
             return array;
         };
@@ -220,7 +222,7 @@
         };
 
         this.getRoot = function() {
-            return _root.value;
+            return getValue(_root.content);
         };
 
         this.getRootNode = function() {
@@ -234,8 +236,8 @@
 
     }
 
-    exports.createBST = function() {
-        return new BinarySearchTree();
+    exports.createBST = function(value) {
+        return new BinarySearchTree(value);
     };
 
 
