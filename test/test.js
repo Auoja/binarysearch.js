@@ -48,19 +48,67 @@ describe('#insert()', function() {
         var bst = BST.createBST(function(person) {
             return person.age;
         });
-        bst.insert({
-            name: "John Foo",
+
+        var John = {
+            name: "John",
             age: 13
-        });
+        };
+
+        bst.insert(John);
 
         it('Should have size 1', function() {
             assert.equal(1, bst.size());
         });
 
-        it('Should have 13 as root', function() {
-            assert.equal(13, bst.getRoot());
+        it('Should have John as root', function() {
+            assert.equal(John, bst.getRoot());
         });
     });
+
+    describe('Insert multiple objects', function() {
+        var bst = BST.createBST(function(person) {
+            return person.age;
+        });
+
+        var Sarah = {
+            name: "Sarah",
+            age: 19
+        };
+        var John = {
+            name: "John",
+            age: 13
+        };
+
+        bst.insert(Sarah);
+        bst.insert(John);
+
+        it('Should have size 2', function() {
+            assert.equal(2, bst.size());
+        });
+
+        it('Should have Sarah as root', function() {
+            assert.equal(Sarah, bst.getRoot());
+        });
+    });
+
+    describe('Insert duplicate object', function() {
+        var bst = BST.createBST(function(person) {
+            return person.age;
+        });
+
+        var John = {
+            name: "John",
+            age: 13
+        };
+
+        bst.insert(John);
+        bst.insert(John);
+
+        it('Should have size 1', function() {
+            assert.equal(1, bst.size());
+        });
+    });
+
 });
 
 describe('#contains()', function() {
@@ -205,5 +253,50 @@ describe('#remove()', function() {
         });
     });
 
+});
+
+describe('#getMin(), #getMax', function() {
+
+    it('Should return 0 and 17', function() {
+        var bst = BST.createBST();
+        bst.insert(16);
+        bst.insert(2);
+        bst.insert(8);
+        bst.insert(17);
+
+        assert.equal(2, bst.getMin());
+        assert.equal(17, bst.getMax());
+    });
+
+    it('Should return John and Carl', function() {
+        var bst = BST.createBST(function(person) {
+            return person.age;
+        });
+
+        var John = {
+            name: "John",
+            age: 13
+        };
+        var Carl = {
+            name: "Carl",
+            age: 45
+        };
+        var Sarah = {
+            name: "Sarah",
+            age: 19
+        };
+        var Nathalie = {
+            name: "Nathalie",
+            age: 28
+        };
+
+        bst.insert(John);
+        bst.insert(Carl);
+        bst.insert(Sarah);
+        bst.insert(Nathalie);
+
+        assert.equal(John, bst.getMin());
+        assert.equal(Carl, bst.getMax());
+    });
 
 });
