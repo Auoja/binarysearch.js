@@ -11,19 +11,16 @@ Coming soon ...
 Install `mocha` either globaly or locally by running:
 
 ```
-	node install
-	
+	node install	
 ```
 
 Then just run:
 
 ```
 	node test
-	
 ```
 or:
 
 ```
 	node test/test.js
-	
 ```
