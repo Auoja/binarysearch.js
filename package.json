@@ -1,5 +1,5 @@
 {
-    "name": "BinarySearchTree",
+    "name": "BinarySearch.js",
     "version": "0.0.1",
     "description": "JavaScript Binary Search Tree implementation",
     "main": "binarysearch.js",
@@ -10,6 +10,10 @@
         "test": "./node_modules/.bin/mocha"
     },
     "author": "Anton Auoja <antonauoja@gmail.com>",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/Auoja/binarysearch.js.git"
+    },
     "readmeFilename": "README.md",
     "engines": {
         "node": "0.10.31"
