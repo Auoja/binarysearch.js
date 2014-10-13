@@ -6,12 +6,18 @@ A JavaScript Binary Search Tree implementation.
 
 Coming soon ...
 
-## Test
+## Testing
 
-Install `mocha` either globaly or locally by running:
+Make sure you have [Node](http://nodejs.org) installed and then install [Mocha](http://visionmedia.github.io/mocha/) either globally:
 
 ```
-	node install	
+	node install -g mocha
+```
+
+... or locally:
+
+```
+	node install
 ```
 
 Then just run:
