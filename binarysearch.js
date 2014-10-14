@@ -2,7 +2,6 @@
 
     function BinarySearchTree(value) {
         var _root = null;
-        var _size = 0;
         var getValue = value || function(a) {
             return a;
         };
@@ -21,7 +20,6 @@
         // Private
         function _insert(newNode, node) {
             if (node === null) {
-                _size++;
                 return newNode;
             } else if (newNode.getValue() < node.getValue()) {
                 node.leftChild = _insert(newNode, node.leftChild);
@@ -82,7 +80,6 @@
         this.insert = function(content) {
             if (!_root) {
                 _root = new Node(content, null, null);
-                _size++;
             } else {
                 _root = _insert(new Node(content, null, null), _root);
             }
@@ -169,7 +166,6 @@
                     removeNodeWithNoChild(currentNode, parentNode);
                 }
 
-                _size--;
             }
         };
 
@@ -178,7 +174,11 @@
         };
 
         this.size = function() {
-            return _size;
+            var size = 0;
+            _traverse(_root, function() {
+                size++;
+            });
+            return size;
         };
 
         this.toArray = function() {
@@ -203,7 +203,6 @@
         this.flatten = function() {
             var sortedArray = this.toArray();
             _root = null;
-            _size = 0;
             this.arrayToTree(sortedArray);
         };
 
@@ -233,7 +232,6 @@
 
         this.delete = function() {
             _root = null;
-            _size = 0;
         };
 
     }
