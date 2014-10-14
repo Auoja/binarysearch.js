@@ -202,7 +202,7 @@ describe('#remove()', function() {
         });
 
         it('Should have 5 as root', function() {
-            assert.equal(5, bst.getRoot());
+            assert.equal(25, bst.getRoot());
         });
     });
 

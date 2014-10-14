@@ -34,14 +34,14 @@
 
         function _getMin(node) {
             if (node.leftChild === null) {
-                return node.content;
+                return node;
             }
             return _getMin(node.leftChild);
         }
 
         function _getMax(node) {
             if (node.rightChild === null) {
-                return node.content;
+                return node;
             }
             return _getMax(node.rightChild);
         }
@@ -72,6 +72,32 @@
             }
         }
 
+        function _remove(x, node, parent) {
+            if (node === null) {
+                return;
+            }
+
+            if (getValue(x) < node.getValue()) {
+                _remove(x, node.leftChild, node);
+            } else if (getValue(x) > node.getValue()) {
+                _remove(x, node.rightChild, node);
+            } else if (node.leftChild !== null && node.rightChild !== null) {
+                node.content = _getMin(node.rightChild).content;
+                _remove(node.content, node.rightChild, node);
+            } else {
+                if (parent) {
+                    if (node.getValue() < parent.getValue()) {
+                        parent.leftChild = node.leftChild || node.rightChild;
+                    } else {
+                        parent.rightChild = node.leftChild || node.rightChild;
+                    }
+                } else {
+                    _root = node.leftChild || node.rightChild;
+                }
+            }
+
+        }
+
         // Public
         this.contains = function(searchNode) {
             return _contains(searchNode, _root);
@@ -85,88 +111,8 @@
             }
         };
 
-        this.remove = function(node) {
-            var currentNode = _root;
-            var parentNode;
-            var inTree = false;
-
-            function removeNodeWithNoChild(node, parent) {
-                if (node === _root) {
-                    _root = null;
-                } else {
-                    if (node.getValue() < parent.getValue()) {
-                        parent.leftChild = null;
-                    } else {
-                        parent.rightChild = null;
-                    }
-                }
-            }
-
-            function removeNodeWithOneChild(node, parent) {
-                if (node === _root) {
-                    _root = node.leftChild || node.rightChild;
-                } else {
-                    if (node.getValue() < parent.getValue()) {
-                        parent.leftChild = node.leftChild || node.rightChild;
-                    } else {
-                        parent.rightChild = node.leftChild || node.rightChild;
-                    }
-                }
-            }
-
-            function removeNodeWithTwoChild(node, parent) {
-
-                var replacementNode = node.leftChild;
-                var replacementNodeParent = null;
-
-                while (replacementNode.rightChild !== null) {
-                    replacementNodeParent = replacementNode;
-                    replacementNode = replacementNode.rightChild;
-                }
-
-                if (replacementNodeParent !== null) {
-                    replacementNodeParent.rightChild = replacementNode.leftChild;
-                    replacementNode.rightChild = node.rightChild;
-                    replacementNode.leftChild = node.leftChild;
-                } else {
-                    replacementNode.rightChild = node.rightChild;
-                }
-
-                if (node === _root) {
-                    _root = replacementNode;
-                } else {
-                    if (node.getValue() < parent.getValue()) {
-                        parent.leftChild = replacementNode;
-                    } else {
-                        parent.rightChild = replacementNode;
-                    }
-                }
-
-            }
-
-            while (!inTree && currentNode) {
-                if (getValue(node) < currentNode.getValue()) {
-                    parentNode = currentNode;
-                    currentNode = currentNode.leftChild;
-                } else if (getValue(node) > currentNode.getValue()) {
-                    parentNode = currentNode;
-                    currentNode = currentNode.rightChild;
-                } else {
-                    inTree = true;
-                }
-            }
-
-            if (inTree) {
-
-                if (currentNode.leftChild && currentNode.rightChild) {
-                    removeNodeWithTwoChild(currentNode, parentNode);
-                } else if (currentNode.leftChild || currentNode.rightChild) {
-                    removeNodeWithOneChild(currentNode, parentNode);
-                } else {
-                    removeNodeWithNoChild(currentNode, parentNode);
-                }
-
-            }
+        this.remove = function(removeNode) {
+            _remove(removeNode, _root, null);
         };
 
         this.traverse = function(operation) {
@@ -211,11 +157,11 @@
         };
 
         this.getMin = function() {
-            return _getMin(_root);
+            return _getMin(_root).content;
         };
 
         this.getMax = function() {
-            return _getMax(_root);
+            return _getMax(_root).content;
         };
 
         this.getRoot = function() {
