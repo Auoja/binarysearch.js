@@ -60,10 +60,24 @@
             }
         }
 
+        function _traverse(node, operation) {
+            if (node) {
+                if (node.leftChild !== null) {
+                    _traverse(node.leftChild, operation);
+                }
+
+                operation.call(this, node.content);
+
+                if (node.rightChild !== null) {
+                    _traverse(node.rightChild, operation);
+                }
+            }
+        }
+
         // Public
         this.contains = function(searchNode) {
-            return _contains(searchNode, _root)
-        }
+            return _contains(searchNode, _root);
+        };
 
         this.insert = function(content) {
             if (!_root) {
@@ -72,7 +86,7 @@
             } else {
                 _root = _insert(new Node(content, null, null), _root);
             }
-        }
+        };
 
         this.remove = function(node) {
             var currentNode = _root;
@@ -159,20 +173,6 @@
             }
         };
 
-        function _traverse(node, operation) {
-            if (node) {
-                if (node.leftChild !== null) {
-                    _traverse(node.leftChild, operation);
-                }
-
-                operation.call(this, node.content);
-
-                if (node.rightChild !== null) {
-                    _traverse(node.rightChild, operation);
-                }
-            }
-        }
-
         this.traverse = function(operation) {
             _traverse(_root, operation);
         };
@@ -192,7 +192,7 @@
         this.arrayToTree = function(array) {
             if (array.length !== 0) {
                 var middle = Math.floor(array.length / 2);
-                this.insert(array[middle]);
+                _insert(array[middle], _root);
                 this.arrayToTree(array.slice(0, middle));
                 this.arrayToTree(array.slice(middle + 1));
             } else {
@@ -232,7 +232,7 @@
         };
 
         this.delete = function() {
-            root = null;
+            _root = null;
             _size = 0;
         };
 
