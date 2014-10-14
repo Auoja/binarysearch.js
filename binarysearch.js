@@ -29,6 +29,8 @@
             } else if (newNode.getValue() > node.getValue()) {
                 node.rightChild = _insert(newNode, node.rightChild);
                 return node;
+            } else {
+                return node;
             }
         }
 
@@ -181,8 +183,8 @@
 
         this.toArray = function() {
             var array = [];
-            this.traverse(function(node) {
-                array.push(node.content);
+            _traverse(_root, function(node) {
+                array.push(node);
             });
             return array;
         };
