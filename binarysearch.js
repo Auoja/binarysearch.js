@@ -182,7 +182,7 @@
 
     }
 
-    exports.createBST = function(value) {
+    exports.create = function(value) {
         return new BinarySearchTree(value);
     };
 

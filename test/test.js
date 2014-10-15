@@ -5,7 +5,8 @@ var assert = require("assert");
 describe('#insert()', function() {
 
     describe('Insert single', function() {
-        var bst = BST.createBST();
+
+        var bst = BST.create();
         bst.insert(13);
 
         it('Should have size 1', function() {
@@ -15,11 +16,12 @@ describe('#insert()', function() {
         it('Should have 13 as root', function() {
             assert.equal(13, bst.getRoot());
         });
+
     });
 
     describe('Insert multiple', function() {
 
-        var bst = BST.createBST();
+        var bst = BST.create();
         bst.insert(2);
         bst.insert(1);
         bst.insert(3);
@@ -31,21 +33,24 @@ describe('#insert()', function() {
         it('Should have 2 as root', function() {
             assert.equal(2, bst.getRoot());
         });
+
     });
 
     describe('Insert duplicate', function() {
 
-        var bst = BST.createBST();
+        var bst = BST.create();
         bst.insert(8);
         bst.insert(8);
 
         it('Should have size 1', function() {
             assert.equal(1, bst.size());
         });
+
     });
 
     describe('Insert single object', function() {
-        var bst = BST.createBST(function(person) {
+
+        var bst = BST.create(function(person) {
             return person.age;
         });
 
@@ -63,10 +68,12 @@ describe('#insert()', function() {
         it('Should have John as root', function() {
             assert.equal(John, bst.getRoot());
         });
+
     });
 
     describe('Insert multiple objects', function() {
-        var bst = BST.createBST(function(person) {
+
+        var bst = BST.create(function(person) {
             return person.age;
         });
 
@@ -89,10 +96,12 @@ describe('#insert()', function() {
         it('Should have Sarah as root', function() {
             assert.equal(Sarah, bst.getRoot());
         });
+
     });
 
     describe('Insert duplicate object', function() {
-        var bst = BST.createBST(function(person) {
+
+        var bst = BST.create(function(person) {
             return person.age;
         });
 
@@ -107,13 +116,14 @@ describe('#insert()', function() {
         it('Should have size 1', function() {
             assert.equal(1, bst.size());
         });
+
     });
 
 });
 
 describe('#contains()', function() {
 
-    var bst = BST.createBST();
+    var bst = BST.create();
     bst.insert(2);
 
     it('Should return true if node is found, otherwise return false', function() {
@@ -125,7 +135,7 @@ describe('#contains()', function() {
 
 describe('#traverse()', function() {
 
-    var bst = BST.createBST();
+    var bst = BST.create();
     bst.insert(2);
     bst.insert(3);
     bst.insert(1);
@@ -152,7 +162,8 @@ describe('#traverse()', function() {
 describe('#remove()', function() {
 
     describe('Remove root with no children', function() {
-        var bst = BST.createBST();
+
+        var bst = BST.create();
         bst.insert(13);
 
         it('Should have size 0', function() {
@@ -163,10 +174,12 @@ describe('#remove()', function() {
         it('Should not contain 13', function() {
             assert.equal(false, bst.contains(13));
         });
+
     });
 
     describe('Remove root with one child', function() {
-        var bst = BST.createBST();
+
+        var bst = BST.create();
         bst.insert(13);
         bst.insert(5);
 
@@ -183,10 +196,12 @@ describe('#remove()', function() {
         it('Should have 5 as root', function() {
             assert.equal(5, bst.getRoot());
         });
+
     });
 
     describe('Remove root with two children', function() {
-        var bst = BST.createBST();
+
+        var bst = BST.create();
         bst.insert(13);
         bst.insert(5);
         bst.insert(25);
@@ -204,10 +219,12 @@ describe('#remove()', function() {
         it('Should have 5 as root', function() {
             assert.equal(25, bst.getRoot());
         });
+
     });
 
     describe('Remove node with no children', function() {
-        var bst = BST.createBST();
+
+        var bst = BST.create();
         bst.insert(13);
         bst.insert(8);
 
@@ -220,10 +237,12 @@ describe('#remove()', function() {
         it('Should not contain 8', function() {
             assert.equal(false, bst.contains(8));
         });
+
     });
 
     describe('Remove node with one child', function() {
-        var bst = BST.createBST();
+
+        var bst = BST.create();
         bst.insert(13);
         bst.insert(8);
         bst.insert(5);
@@ -237,10 +256,12 @@ describe('#remove()', function() {
         it('Should not contain 8', function() {
             assert.equal(false, bst.contains(8));
         });
+
     });
 
     describe('Remove node with two children', function() {
-        var bst = BST.createBST();
+
+        var bst = BST.create();
         bst.insert(13);
         bst.insert(8);
         bst.insert(5);
@@ -255,10 +276,12 @@ describe('#remove()', function() {
         it('Should not contain 8', function() {
             assert.equal(false, bst.contains(8));
         });
+
     });
 
     describe('Remove all nodes', function() {
-        var bst = BST.createBST();
+
+        var bst = BST.create();
         bst.insert(13);
         bst.insert(8);
         bst.insert(5);
@@ -276,6 +299,7 @@ describe('#remove()', function() {
             assert.equal(false, bst.contains(8));
             assert.equal(false, bst.contains(13));
         });
+
     });
 
 });
@@ -283,7 +307,8 @@ describe('#remove()', function() {
 describe('#getMin(), #getMax()', function() {
 
     it('Should return 0 and 17', function() {
-        var bst = BST.createBST();
+
+        var bst = BST.create();
         bst.insert(16);
         bst.insert(2);
         bst.insert(8);
@@ -294,7 +319,8 @@ describe('#getMin(), #getMax()', function() {
     });
 
     it('Should return John and Carl', function() {
-        var bst = BST.createBST(function(person) {
+
+        var bst = BST.create(function(person) {
             return person.age;
         });
 
