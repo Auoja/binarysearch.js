@@ -135,12 +135,12 @@
             return arr;
         };
 
-        this.arrayToTree = function(arr) {
+        this.fromArray = function(arr) {
             if (arr.length !== 0) {
                 var middle = Math.floor(arr.length / 2);
                 _insert(arr[middle], _root);
-                this.arrayToTree(arr.slice(0, middle));
-                this.arrayToTree(arr.slice(middle + 1));
+                this.fromArray(arr.slice(0, middle));
+                this.fromArray(arr.slice(middle + 1));
             } else {
                 return;
             }
@@ -149,7 +149,7 @@
         this.flatten = function() {
             var sortedArray = this.toArray();
             _root = null;
-            this.arrayToTree(sortedArray);
+            this.fromArray(sortedArray);
         };
 
         this.getDepth = function() {
