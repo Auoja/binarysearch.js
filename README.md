@@ -63,7 +63,7 @@ Basic usage with objects. Note that `.create()` takes a value extraction functio
 
 ## Testing
 
-Make sure you have [Node](http://nodejs.org) installed and then install [Mocha](http://visionmedia.github.io/mocha/) either globally:
+Make sure you have [Node](http://nodejs.org) installed and then install [Mocha](http://mochajs.org/) either globally:
 
 ```
 	node install -g mocha
